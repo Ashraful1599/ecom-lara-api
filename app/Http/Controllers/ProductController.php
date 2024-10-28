@@ -421,4 +421,18 @@ class ProductController extends Controller
 
     }
 
+    public function bulkDeleteProducts(Request $request)
+    {
+        $ids = $request->input('ids'); // Get array of IDs from request
+        if (is_array($ids) && count($ids) > 0) {
+            $deletedCount = Product::destroy($ids); // Delete multiple products with an array of IDs
+            return response()->json(['deleted' => $deletedCount], 200);
+        } else {
+            return response()->json(['error' => 'No valid IDs provided'], 400);
+        }
+    }
+
+
+
+
 }

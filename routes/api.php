@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/products/{id}', [ProductController::class, 'show']);
     Route::put('/products/{id}', [ProductController::class, 'update']);
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+    Route::post('/products/bulkDelete', [ProductController::class, 'bulkDeleteProducts']);
+
 
     // Category routes
     Route::get('/categories', [CategoryController::class, 'index']);
