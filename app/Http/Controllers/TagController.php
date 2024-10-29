@@ -14,6 +14,12 @@ class TagController extends Controller
         return response()->json($tags, 200);
     }
 
+    public function show($id)
+    {
+        $tag = Tag::findOrFail($id);
+        return response()->json($tag, 200);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

@@ -14,6 +14,12 @@ class AttributeController extends Controller
         return response()->json($attributes, 200);
     }
 
+    public function show($id)
+    {
+        $attribute = Attribute::with('values')->findOrFail($id);
+        return response()->json($attribute, 200);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -39,7 +45,7 @@ class AttributeController extends Controller
 
         $attribute->update([
             'name' => $validated['name'],
-           // 'slug' => $validated['slug'] ?? Str::slug($validated['name']), // Update slug if provided or regenerate
+            'slug' => $validated['slug'] ?? Str::slug($validated['name']), // Update slug if provided or regenerate
         ]);
 
         return response()->json($attribute, 200);

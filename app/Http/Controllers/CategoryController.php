@@ -14,6 +14,12 @@ class CategoryController extends Controller
         return response()->json($categories, 200);
     }
 
+    public function show($id)
+    {
+        $category = Category::findOrFail($id);
+        return response()->json($category, 200);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -22,7 +28,7 @@ class CategoryController extends Controller
         ]);
 
         $category = Category::create([
-            'name'=>$validated['name'],
+            'name' => $validated['name'],
             'slug' => $validated['slug'] ?? Str::slug($validated['name']), // Generate slug if not provided
         ]);
         return response()->json($category, 201);

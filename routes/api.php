@@ -23,28 +23,31 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
     Route::post('/products/bulkDelete', [ProductController::class, 'bulkDeleteProducts']);
 
-
     // Category routes
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::post('/categories', [CategoryController::class, 'store']);
+    Route::get('/categories/{id}', [CategoryController::class, 'show']); // Added show route
     Route::put('/categories/{id}', [CategoryController::class, 'update']);
     Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
 
     // Tag routes
     Route::get('/tags', [TagController::class, 'index']);
     Route::post('/tags', [TagController::class, 'store']);
+    Route::get('/tags/{id}', [TagController::class, 'show']); // Added show route
     Route::put('/tags/{id}', [TagController::class, 'update']);
     Route::delete('/tags/{id}', [TagController::class, 'destroy']);
 
     // Attribute routes
     Route::get('/attributes', [AttributeController::class, 'index']);
     Route::post('/attributes', [AttributeController::class, 'store']);
+    Route::get('/attributes/{id}', [AttributeController::class, 'show']); // Added show route
     Route::put('/attributes/{id}', [AttributeController::class, 'update']);
     Route::delete('/attributes/{id}', [AttributeController::class, 'destroy']);
 
     // Attribute Value routes
     Route::get('/attributes/{attributeId}/values', [AttributeValueController::class, 'index']);
     Route::post('/attributes/{attributeId}/values', [AttributeValueController::class, 'store']);
+    Route::get('/attributes/{attributeId}/values/{valueId}', [AttributeValueController::class, 'show']); // Added show route
     Route::put('/attributes/{attributeId}/values/{valueId}', [AttributeValueController::class, 'update']);
     Route::delete('/attributes/{attributeId}/values/{valueId}', [AttributeValueController::class, 'destroy']);
 

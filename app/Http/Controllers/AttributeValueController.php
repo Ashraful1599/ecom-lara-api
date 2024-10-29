@@ -17,6 +17,15 @@ class AttributeValueController extends Controller
         return response()->json($values, 200);
     }
 
+    public function show($attributeId, $valueId)
+    {
+        // Fetch a specific attribute value for the given attribute ID and value ID
+        $attribute = Attribute::findOrFail($attributeId);
+        $attributeValue = $attribute->values()->findOrFail($valueId);
+
+        return response()->json($attributeValue, 200);
+    }
+
     public function store(Request $request, $attributeId)
     {
         $attribute = Attribute::findOrFail($attributeId);
