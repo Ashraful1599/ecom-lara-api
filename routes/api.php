@@ -9,8 +9,7 @@ use App\Http\Controllers\AttributeValueController;
 use App\Http\Controllers\TagController;
 
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/login', [AuthController::class, 'login']);;
 Route::get('/login', [AuthController::class, 'unauthenticated'])->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -57,4 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/orders/{id}', [OrderController::class, 'show']);
     Route::put('/orders/{id}', [OrderController::class, 'update']);
     Route::delete('/orders/{id}', [OrderController::class, 'destroy']);
+
+    Route::post('/logout', [AuthController::class, 'logout']);
+
 });
