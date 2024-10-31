@@ -50,6 +50,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/attributes/{attributeId}/values/{valueId}', [AttributeValueController::class, 'update']);
     Route::delete('/attributes/{attributeId}/values/{valueId}', [AttributeValueController::class, 'destroy']);
 
+
+    // user routes
+    Route::get('/users', [AuthController::class, 'index']);
+    Route::get('/users/{userId}', [AuthController::class, 'show']); // Added show route
+    Route::put('/users/{userId}', [AuthController::class, 'update']);
+    Route::delete('/users/{userId}', [AuthController::class, 'destroy']);
+    Route::post('/users/bulkDelete', [AuthController::class, 'bulkDeleteUsers']);
+
     // Order routes
     Route::get('/orders', [OrderController::class, 'index']);
     Route::post('/orders', [OrderController::class, 'store']);

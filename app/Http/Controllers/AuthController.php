@@ -15,6 +15,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'role' => 'nullable|string',
             'password' => 'required|string|min:8',
         ]);
 
@@ -25,6 +26,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'role' => $request->role,
             'password' => Hash::make($request->password),
         ]);
 
@@ -40,9 +42,16 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        $token = $user->createToken('authToken')->plainTextToken;
 
-        return response()->json(['user' => $user, 'token' => $token], 200);
+        // Check if the user has the role 'administrator'
+        if ($user->role === 'administrator') {
+            $token = $user->createToken('authToken')->plainTextToken;
+
+            return response()->json(['user' => $user, 'token' => $token], 200);
+        }
+
+        // If the user is not an administrator, return a different response
+        return response()->json(['message' => 'Access denied: User is not an administrator'], 403);
     }
 
     public function logout(Request $request)
@@ -57,4 +66,62 @@ class AuthController extends Controller
             "message" => "Unauthenticated. Please login first",
         ], 401);
     }
+
+    public  function  index()
+    {
+        $users  = User::all();
+        return response()->json($users,200 );
+    }
+
+    public  function show($id)
+    {
+      $user = User::all()->findOrFail($id);
+
+      return response()->json($user, 200);
+    }
+
+    public function update(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+
+        // Validate the incoming request
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $userId,
+            'role' => 'nullable|string',
+            'password' => 'nullable|string|min:8', // Make password nullable for optional updates
+        ]);
+
+        // Check if password is present in the request, and hash it if so
+        if ($request->filled('password')) {
+            $validated['password'] = Hash::make($request->password);
+        } else {
+            unset($validated['password']); // Exclude password if not provided
+        }
+
+        // Update the user with the validated and possibly hashed data
+        $user->update($validated);
+
+        return response()->json($user, 200);
+    }
+
+    public  function  destroy($id)
+    {
+      $user = User::destroy($id);
+      return response()->json($user, 200);
+    }
+
+    public function bulkDeleteUsers(Request $request)
+    {
+        $ids = $request->input('ids'); // Get array of IDs from request
+        if (is_array($ids) && count($ids) > 0) {
+            $deletedCount = User::destroy($ids); // Delete multiple products with an array of IDs
+            return response()->json(['deleted' => $deletedCount], 200);
+        } else {
+            return response()->json(['error' => 'No valid IDs provided'], 400);
+        }
+    }
+
+
+
 }
