@@ -295,17 +295,17 @@ class ProductController extends Controller
                 }
             }
 
-            $existingGalleryImages = $validated['existingGalleryImages'] ?? [];
-            $product->images()->where('is_featured', false)
-                ->whereNotIn('image_path', $existingGalleryImages)
-                ->delete();
-
-            foreach ($existingGalleryImages as $existingImagePath) {
-                $product->images()->firstOrCreate([
-                    'image_path' => $existingImagePath,
-                    'is_featured' => false,
-                ]);
-            }
+//            $existingGalleryImages = $validated['existingGalleryImages'] ?? [];
+//            $product->images()->where('is_featured', false)
+//                ->whereNotIn('image_path', $existingGalleryImages)
+//                ->delete();
+//
+//            foreach ($existingGalleryImages as $existingImagePath) {
+//                $product->images()->firstOrCreate([
+//                    'image_path' => $existingImagePath,
+//                    'is_featured' => false,
+//                ]);
+//            }
 
             if ($request->hasFile('gallery')) {
                 foreach ($request->file('gallery') as $galleryImage) {
